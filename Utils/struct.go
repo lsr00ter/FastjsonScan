@@ -1,6 +1,6 @@
 package Utils
 
-type FS_VERSION string   //fastjson版本号
+type FS_VERSION string //fastjson 版本号
 const FJ_UNDER_48 string = "Fastjson < 1.2.48"
 const FJ_BEYOND_48 string = "Fastjson ≥ 1.2.48"
 const FJ_NOT_DETECT string = "Fastjson isn't detected or network isn't achieve"
@@ -13,14 +13,13 @@ const NETWORK_NOT_ACCESS = "Network is Unreachable"
 
 /* class */
 
-var DependencyList =[]string{
+var DependencyList = []string{
 	"org.springframework.web.bind.annotation.RequestMapping",
 	"org.apache.shiro.jndi.JndiObjectFactory",
 	"org.apache.catalina.startuo.Tomcat",
 	"groovy.lang.GroovyShell",
 	"com.mysql.jdbc.Driver",
 	"java.net.http.HttpClient",
-
 }
 
 /**
@@ -33,44 +32,34 @@ type DNSPayloads struct {
 	Dns_80 string
 }
 
-
 type ResultFomat struct {
-	Variables map[string]string
+	Variables  map[string]string
 	Dependency []string
 }
-
 
 type Payload struct {
 	Variables map[string]string
 }
 
-
 type Option struct {
-	Url string
+	Url     string
 	Targets string
-	Result string
+	Result  string
 }
 
 type Result struct {
-	Url string
-	Type string
-	Version string
-	AutoType bool
-	Netout bool
+	Url        string
+	Type       string
+	Version    string
+	AutoType   bool
+	Netout     bool
 	Dependency []string
 }
 
-func InitResult(result Result)  {
+func InitResult(result Result) {
 	result.Url = ""
 	result.Type = ""
 	result.Version = ""
 	result.AutoType = false
 	result.Netout = false
 }
-
-
-
-
-
-
-

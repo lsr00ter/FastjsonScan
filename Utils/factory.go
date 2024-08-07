@@ -6,24 +6,21 @@ import (
 	"text/template"
 )
 
-
 /**
-*** 工厂文件，用于处理payload模版，生成实际payload
+*** 工厂文件，用于处理 payload 模版，生成实际 payload
 **/
-
-
 
 /**
 *** 出网探测
 **/
 
-func NET_DETECT_FACTORY() (string,string){
+func NET_DETECT_FACTORY() (string, string) {
 	var buffer bytes.Buffer
 	payloadTemplate := TAR_NET_DETECT
 	var session string
 	Payload := &Payload{}
 	Payload.Variables = make(map[string]string)
-	Payload.Variables["DNS"],session = GetDnslogUrl()
+	Payload.Variables["DNS"], session = GetDnslogUrl()
 	buffer.Reset()
 	PayloadTemplate, err := template.New("Payload").Parse(payloadTemplate)
 	if err != nil {
@@ -33,21 +30,21 @@ func NET_DETECT_FACTORY() (string,string){
 	if err = PayloadTemplate.Execute(&buffer, Payload); err != nil {
 		log.Fatal(err)
 	}
-	return buffer.String(),session
+	return buffer.String(), session
 }
 
 /**
-***  DNS探测
+***  DNS 探测
 ***  output  payloads(dns_48_payload,dns_68_payload,dns_80_payload),session
 **/
 
-func DNS_DETECT_FACTORY() (DNSPayloads,string){
+func DNS_DETECT_FACTORY() (DNSPayloads, string) {
 	var payloads DNSPayloads
 	var buffer bytes.Buffer
 	var session string
 	Dns := &Payload{}
 	Dns.Variables = make(map[string]string)
-	Dns.Variables["DNS"],session = GetDnslogUrl()
+	Dns.Variables["DNS"], session = GetDnslogUrl()
 	buffer.Reset()
 	dns_48_payload, err := template.New("Dns").Parse(DNS_DETECT_48)
 	dns_68_payload, err := template.New("Dns").Parse(DNS_DETECT_68)
@@ -70,20 +67,17 @@ func DNS_DETECT_FACTORY() (DNSPayloads,string){
 		log.Fatal(err)
 	}
 	payloads.Dns_80 = buffer.String()
-	return payloads,session
+	return payloads, session
 }
 
-
-
-
 /**
-*** 生成count条payload 默认为count=5
+*** 生成 count 条 payload 默认为 count=5
 **/
 
-func TIME_DETECT_FACTORY(count int) []string{
+func TIME_DETECT_FACTORY(count int) []string {
 	var buffer bytes.Buffer
 	var payloadTemplate = TIME_DETECT
-	payloads := make([]string,count)
+	payloads := make([]string, count)
 	Payload := &Payload{}
 	Payload.Variables = make(map[string]string)
 	for i := 0; i < count; i++ {
@@ -103,15 +97,15 @@ func TIME_DETECT_FACTORY(count int) []string{
 }
 
 /**
-*** 检测是否开启了AutoType的payload
+*** 检测是否开启了 AutoType 的 payload
 *** input  dnsurl
 *** output payload
 **/
 
-func AUTOTYPE_DETECT_FACTORY(dnsurl string) string{
+func AUTOTYPE_DETECT_FACTORY(dnsurl string) string {
 	var buffer bytes.Buffer
 	var payloadTemplate = AUTOTYPE_CHECK
-	Payload :=&Payload{}
+	Payload := &Payload{}
 	Payload.Variables = make(map[string]string)
 	Payload.Variables["DNS"] = dnsurl
 	buffer.Reset()
@@ -126,18 +120,17 @@ func AUTOTYPE_DETECT_FACTORY(dnsurl string) string{
 	return buffer.String()
 }
 
-
 /**
 *** 探测是否含有依赖库
 ***
 *** output payloads
 **/
 
-func DEPENDENCY_ERR_DETECT_FACTORY() map[string]string{
+func DEPENDENCY_ERR_DETECT_FACTORY() map[string]string {
 	var payloads = make(map[string]string)
 	var buffer bytes.Buffer
 	var payloadTemplate = DEPENDENCY_DETECT_BY_ERR
-	gadgetName :=&Payload{}
+	gadgetName := &Payload{}
 	gadgetName.Variables = make(map[string]string)
 	for i := 0; i < len(DependencyList); i++ {
 		gadgetName.Variables["Dependency"] = DependencyList[i]
@@ -150,34 +143,33 @@ func DEPENDENCY_ERR_DETECT_FACTORY() map[string]string{
 
 }
 
-func SCAN_RESULTS_OUTPUT_FACTORY(result Result) string{
+func SCAN_RESULTS_OUTPUT_FACTORY(result Result) string {
 	var outputString string
 	var buffer bytes.Buffer
 	var outputStringTemplate = RESULT_OUTPUT
 	var net string
 	var autotype string
-	if result.Netout{
+	if result.Netout {
 		net = "可出网"
-	}else{
+	} else {
 		net = "不出网"
 	}
 	if result.AutoType {
 		autotype = "开启"
-	}else{
+	} else {
 		autotype = "未开启"
 	}
 	field := &ResultFomat{}
 	field.Variables = make(map[string]string)
-	field.Dependency = make([]string,len(result.Dependency))
+	field.Dependency = make([]string, len(result.Dependency))
 	field.Variables["Url"] = result.Url
 	field.Variables["Version"] = result.Version
 	field.Variables["Netout"] = net
 	field.Variables["Autotype"] = autotype
 	field.Dependency = result.Dependency
 	buffer.Reset()
-	resultTemplate ,_ := template.New("field").Parse(outputStringTemplate)
-	_ = resultTemplate.Execute(&buffer,field)
-	outputString  = buffer.String()
+	resultTemplate, _ := template.New("field").Parse(outputStringTemplate)
+	_ = resultTemplate.Execute(&buffer, field)
+	outputString = buffer.String()
 	return outputString
 }
-
